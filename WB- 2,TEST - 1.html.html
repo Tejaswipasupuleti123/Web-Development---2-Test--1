@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table {
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        input, button {
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            align: center;
+        }
+    </style>
+</head>
+<body>
+<div align="center">
+    <h1>Grade Calculator</h1>
+
+    <button onclick="addActivity()" id="addActivity">Add Activity</button>
+
+    <label for="activity">Activity</label>
+    <input type="text" id="activity" size="3">
+
+    <label for="Weight">Weight</label>
+    <input type="text" id="Weight" size="3"><br>
+
+    <button onclick="addGrade()" id="addGrade">Add Grade</button>
+
+    <label for="grade">Grade</label>
+    <input type="text" id="grade" size="3">
+
+    <label for="activityNo">Activity no</label>
+    <input type="text" id="activityNo" size="3"><br>
+
+    <button onclick="deleteActivity()" id="deleteActivity">Delete Activity</button>
+
+    <table border="2" id="theTable" style="width:70%">
+        <tr>
+            <th>No</th>
+            <th>Activity</th>
+            <th>Weight</th>
+            <th>Grade</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Lab1</td>
+            <td>10</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Lab2</td>
+            <td>20</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Test1</td>
+            <td>30</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>Test2</td>
+            <td>40</td>
+            <td></td>
+        </tr>
+    </table>
+    <p id="ERR" style="color:red;">Error Message: </p>
+
+    <script>
+        var noActivity = 4;
+        var totalWeight = 100;
+        var ERR = document.getElementById("ERR");
+
+        function addActivity() {
+            var activityInput = document.getElementById('activity').value.trim();
+            var weightInput = document.getElementById('Weight').value.trim();
+            
+            var table = document.getElementById("theTable").getElementsByTagName('tbody')[0];
+            var newRow = table.insertRow(table.rows.length);
+
+            var cell1 = newRow.insertCell(0);
+            var cell2 = newRow.insertCell(1);
+            var cell3 = newRow.insertCell(2);
+            var cell4 = newRow.insertCell(3);
+
+            cell1.innerHTML = ++noActivity;
+            cell2.innerHTML = activityInput;
+            cell3.innerHTML = weightInput;
+            cell4.innerHTML = "";
+
+            document.getElementById('activity').value = "";
+            document.getElementById('Weight').value = "";
+        }
+
+        function addGrade() {
+            var gradeInput = document.getElementById('grade').value.trim();
+            var activityNoInput = document.getElementById('activityNo').value.trim();
+
+            if (activityNoInput === "" || isNaN(activityNoInput) || activityNoInput < 1 || activityNoInput > noActivity) {
+                displayError("Activity No is Rejected.");
+                return;
+            }
+
+            if (isNaN(gradeInput) || gradeInput < 0 || gradeInput > 100) {
+                displayError("Grade is Rejected.");
+                return;
+            }
+
+            var table = document.getElementById("theTable");
+            var row = table.rows[activityNoInput];
+            row.cells[3].innerHTML = gradeInput;
+
+            document.getElementById('grade').value = "";
+            document.getElementById('activityNo').value = "";
+        }
+
+        function displayError(message) {
+            ERR.textContent = "Error Message: " + message;
+        }
+        
+        function deleteActivity() {
+            var table = document.getElementById("theTable").getElementsByTagName('tbody')[0];
+            var rowCount = table.rows.length;
+            if (rowCount > 1) {
+            table.deleteRow(rowCount -1);
+             noActivity--;
+             displayError("No more activities to remove")
+            }
+        }
+        
+    </script>
+</body>
+</html>
+        
